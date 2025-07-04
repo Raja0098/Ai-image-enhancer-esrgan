@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+opencv-python-headless
+numpy
+torch
+torchvision
+pillow
+jinja2
+git+https://github.com/xinntao/BasicSR.git

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enhance Your Images – Make Every Pixel Count!</title>
+    <style>
+        :root {
+            --bg: #f3f6fb;
+            --text: #111;
+            --card-bg: #fff;
+            --primary: #667eea;
+            --button-bg: #667eea;
+            --button-hover: #5a67d8;
+            --download-bg: #28a745;
+            --download-hover: #218838;
+        }
+
+        body.dark {
+            --bg: #121212;
+            --text: #eee;
+            --card-bg: #1e1e1e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--primary), #764ba2);
+            padding: 50px 20px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .toggle-mode {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            margin: 40px auto;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .upload-form {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .dropzone {
+            border: 2px dashed #aaa;
+            border-radius: 10px;
+            padding: 30px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .dropzone.hover {
+            background-color: #eef1fa;
+            border-color: var(--primary);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+        }
+
+        .result {
+            margin-top: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid #eee;
+            border-radius: 10px;
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 12px;
+            text-decoration: none;
+            color: white;
+            background-color: var(--download-bg);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .download-link:hover {
+            background-color: var(--download-hover);
+        }
+
+        .loading {
+            display: none;
+            font-style: italic;
+            color: #444;
+            margin-top: 20px;
+            font-size: 1.1rem;
+        }
+
+        .stats {
+            margin-top: 10px;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px;
+            background-color: #f0f0f0;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        body.dark footer {
+            background-color: #1a1a1a;
+            color: #ccc;
+        }
+
+        footer a {
+            color: inherit;
+            text-decoration: underline;
+            margin: 0 8px;
+        }
+
+        footer a:hover {
+            text-decoration: none;
+        }
+    </style>
+
+    <script>
+        let imageCount = localStorage.getItem("enhancedCount") || 0;
+
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+        }
+
+        function setupDropzone() {
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('hover');
+            });
+
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('hover');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('hover');
+                fileInput.files = e.dataTransfer.files;
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setupDropzone();
+            document.getElementById("statCount").innerText = imageCount;
+        });
+    </script>
+</head>
+<body>
+    <button class="toggle-mode" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
+
+    <header>
+        <h1>✨ Enhance Your Images Instantly</h1>
+        <p>Bring blurry or low-resolution images to life using AI Super Resolution.<br>Upload your photo – we’ll do the magic.</p>
+    </header>
+
+    <div class="container">
+        <form class="upload-form" action="/upload/" method="post" enctype="multipart/form-data" onsubmit="showLoading(); localStorage.setItem('enhancedCount', parseInt(localStorage.getItem('enhancedCount') || 0) + 1)">
+            <div id="dropzone" class="dropzone">
+                Click or drag & drop your image here
+            </div>
+            <input type="file" name="file" id="fileInput" accept="image/*" required>
+            <br>
+            <button type="submit">Upload & Enhance</button>
+        </form>
+
+        <div id="loading" class="loading">
+            ⏳ Please wait, we’re enhancing your masterpiece...
+        </div>
+
+        <div class="stats">
+            📈 You've enhanced <strong><span id="statCount">0</span></strong> image(s) today!
+        </div>
+
+        {% if image_url %}
+        <div class="result">
+            <h2>🎉 Enhancement Complete!</h2>
+            <p>Here’s your sharper, clearer image:</p>
+            <img src="{{ image_url }}" alt="Enhanced Image">
+            <br>
+            <a class="download-link" href="{{ image_url }}" download>⬇️ Download Enhanced Image</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; {{ 2025 }} <strong>Raja Kumar</strong>. All rights reserved.</p>
+        <p>
+            <a href="#">Privacy Policy</a> |
+            <a href="#">Terms of Service</a> |
+            <a href="mailto:Raja0098@gmail.com">Contact</a>
+        </p>
+    </footer>
+</body>
+</html>
+
