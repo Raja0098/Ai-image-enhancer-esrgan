@@ -65,8 +65,8 @@ The Real-ESRGAN and SwinIR models were fine-tuned using a Kaggle notebook on a d
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/image-enhancer-app.git
-cd image-enhancer-app
+git clone https://github.com/Raja0098/Ai-image-enhancer-esrgan.git
+cd Ai-image-enhancer-esrgan
 
 # Create a virtual environment and activate
 python3 -m venv venv
